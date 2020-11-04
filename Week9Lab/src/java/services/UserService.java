@@ -7,6 +7,7 @@ package services;
 
 import dataaccess.UserDB;
 import java.util.List;
+import models.Role;
 import models.User;
 /**
  *
@@ -27,8 +28,9 @@ public class UserService {
     }
     
     
-    public void insert(User thisUser) throws Exception {
+    public void insert(User thisUser, Role newRole) throws Exception {
         User user = thisUser;
+        user.setRole(newRole);
         UserDB userDB = new UserDB();
         userDB.insert(user);
     }

@@ -92,7 +92,15 @@
                             <td>${readUser.lastName}</td>
                             <td>
                                 <c:forEach items="${role}" var="read">    
-                                    <c:if test="${readUser.role eq read.roleId}">${read.roleName}</c:if>
+                                    <c:if test="${readUser.role eq 'models.Role[ roleId=1 ]' && read.roleId eq '1'}">
+                                        ${read.roleName}
+                                    </c:if>
+                                    <c:if test="${readUser.role eq 'models.Role[ roleId=2 ]' && read.roleId eq '2'}">
+                                        ${read.roleName}
+                                    </c:if>
+                                    <c:if test="${readUser.role eq 'models.Role[ roleId=3 ]' && read.roleId eq '3'}">
+                                        ${read.roleName}
+                                    </c:if>
                                 </c:forEach>
                             </td>
                             <td>

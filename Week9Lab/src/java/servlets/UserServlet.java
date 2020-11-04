@@ -48,6 +48,8 @@ public class UserServlet extends HttpServlet {
         UserService users = new UserService();
         
         User newUser = null;
+        Role newRole = null;
+        String roleName = null;
         String userEmail = request.getParameter("useremail");
 
         if (userEmail == null || userEmail.isEmpty()) {
@@ -56,15 +58,29 @@ public class UserServlet extends HttpServlet {
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
             String password = request.getParameter("password");
-            int role = Integer.parseInt(request.getParameter("role"));
+            int roleId = Integer.parseInt(request.getParameter("role"));
 
-            newUser = new User(email, active, firstName, lastName, password);            
+            if(roleId == 1)
+            {
+                roleName = "system admin";
+            }
+            else if(roleId == 2)
+            {
+                roleName = "regular user";
+            }
+            else if(roleId == 3)
+            {
+                roleName = "company admin";
+            }
+            
+            newUser = new User(email, active, firstName, lastName, password);
+            newRole = new Role(roleId, roleName);
         }
 
         try {
             switch (action) {
                 case "add":
-                    users.insert(newUser);
+                    users.insert(newUser, newRole);
                     break;
                 case "update":
                     users.update(newUser);

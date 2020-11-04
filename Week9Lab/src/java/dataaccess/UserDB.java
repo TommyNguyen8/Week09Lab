@@ -15,8 +15,8 @@ public class UserDB {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         
         try {
-            List<User> user = em.createNamedQuery("User.findAll", User.class).getResultList();
-            return user;
+            List<User> users = em.createNamedQuery("User.findAll", User.class).getResultList();
+            return users;
         } finally {
             em.close();
         }
@@ -38,11 +38,11 @@ public class UserDB {
         EntityTransaction et = em.getTransaction();
         
         try {
-            Role role = user.getRole();
-            role.getUserList().add(user);
+            //Role role = user.getRole();
+            //role.getUserList().add(user);
             et.begin();
             em.persist(user);
-            em.merge(role);
+            //em.merge(role);
             et.commit();
         } catch (Exception e) {
             et.rollback();
