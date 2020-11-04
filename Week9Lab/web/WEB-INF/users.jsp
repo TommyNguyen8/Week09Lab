@@ -34,7 +34,7 @@
                         <br/>
                         <select name="role">
                             <c:forEach items="${role}" var="read">    
-                                <option value="${read.roleID}">${read.roleName}</option>
+                                <option value="${read.roleId}">${read.roleName}</option>
                             </c:forEach>
                         </select><br/>
                         <input type="hidden" name="action" value="add">
@@ -85,27 +85,27 @@
                         <td><b><u>Edit</u></b></td>
                         <td><b><u>Delete</u></b></td>
                     </tr>
-                    <c:forEach items="${user}" var="read">
+                    <c:forEach items="${user}" var="readUser">
                         <tr>
-                            <td>${read.email}</td>
-                            <td>${read.firstName}</td>
-                            <td>${read.lastName}</td>
+                            <td>${readUser.email}</td>
+                            <td>${readUser.firstName}</td>
+                            <td>${readUser.lastName}</td>
                             <td>
-                                <c:forEach items="${role}" var="readA">    
-                                    <c:if test="${read.role eq readA.roleID}">${readA.roleName}</c:if>
+                                <c:forEach items="${role}" var="read">    
+                                    <c:if test="${readUser.role eq read.roleId}">${read.roleName}</c:if>
                                 </c:forEach>
                             </td>
                             <td>
                                 <form method="post" action="user">
                                     <input type="hidden" name="action" value="edit">
-                                    <input type="hidden" name="useremail" value="${read.email}">
+                                    <input type="hidden" name="useremail" value="${readUser.email}">
                                     <button class="btnEdit" type="submit" value="Edit"></button>
                                 </form>
                             </td>
                             <td>
                                 <form method="post" action="user">
                                     <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="useremail" value="${read.email}">
+                                    <input type="hidden" name="useremail" value="${readUser.email}">
                                     <button class="btnDelete" type="submit" value="Delete"></button>
                                 </form>
                             </td>

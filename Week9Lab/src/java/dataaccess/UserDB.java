@@ -1,9 +1,8 @@
 package dataaccess;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import models.*;
 
 public class UserDB {
@@ -35,61 +34,55 @@ public class UserDB {
     }
 
     public void insert(User user) throws Exception {
-        ConnectionPool cp = ConnectionPool.getInstance();
-        Connection con = cp.getConnection();
-        PreparedStatement ps = null;
-        String sql = "INSERT INTO user (email, active, first_name, last_name, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
         
         try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1, user.getEmail());
-            ps.setInt(2, user.getActive());
-            ps.setString(3, user.getFirstName());
-            ps.setString(4, user.getLastName());
-            ps.setString(5, user.getPassword());
-            ps.setInt(6, user.getRole());
-            ps.executeUpdate();
+            Role role = user.getRole();
+            role.getUserList().add(user);
+            et.begin();
+            em.persist(user);
+            em.merge(role);
+            et.commit();
+        } catch (Exception e) {
+            et.rollback();
         } finally {
-            DBUtil.closePreparedStatement(ps);
-            cp.freeConnection(con);
+            em.close();
         }
     }
 
     public void update(User user) throws Exception {
-        ConnectionPool cp = ConnectionPool.getInstance();
-        Connection con = cp.getConnection();
-        PreparedStatement ps = null;
-        String sql = "UPDATE user SET active=?, first_name=?, last_name=?, password=?, role=? WHERE email=?";
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction et = em.getTransaction();
         
         try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, user.getActive());
-            ps.setString(2, user.getFirstName());
-            ps.setString(3, user.getLastName());
-            ps.setString(4, user.getPassword());
-            ps.setInt(5, user.getRole());
-            ps.setString(6, user.getEmail());
-            ps.executeUpdate();
+            et.begin();
+            em.merge(user);
+            et.commit();
+        } catch (Exception e) {
+            et.rollback();
         } finally {
-            DBUtil.closePreparedStatement(ps);
-            cp.freeConnection(con);
+            em.close();
         }
     }
 
     public void delete(String email) throws Exception {
-        ConnectionPool cp = ConnectionPool.getInstance();
-        Connection con = cp.getConnection();
-        PreparedStatement ps = null;
-        String sql = "DELETE FROM user WHERE email=?";
+       EntityManager em = DBUtil.getEmFactory().createEntityManager();
+       EntityTransaction et = em.getTransaction();
+       UserDB userDB = new UserDB();
+       User user = userDB.get(email);
         
         try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1, email);
-            ps.executeUpdate();
+            Role role = user.getRole();
+            role.getUserList().remove(user);
+            et.begin();
+            em.remove(em.merge(user));
+            em.merge(role);
+            et.commit();
+        } catch (Exception e) {
+            et.rollback();
         } finally {
-            DBUtil.closePreparedStatement(ps);
-            cp.freeConnection(con);
+            em.close();
         }
     }
-
 }
