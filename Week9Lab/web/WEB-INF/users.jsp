@@ -58,8 +58,16 @@
                         <input type="text" name="password" placeholder="Password" value="${editUser.password}">
                         <br/>
                         <select name="role">
-                            <c:forEach items="${role}" var="read">    
-                                <option value="${read.roleID}" <c:if test="${editUser.role eq read.roleID}">selected</c:if>>${read.roleName}</option>
+                            <c:forEach items="${role}" var="read">  
+                                <c:if test="${editUser.role eq 'models.Role[ roleId=1 ]' && read.roleId eq '1'}">
+                                    <option value="${read.roleId}" selected>${read.roleName}</option>
+                                </c:if>
+                                <c:if test="${editUser.role eq 'models.Role[ roleId=2 ]' && read.roleId eq '2'}">
+                                    <option value="${read.roleId}" selected>${read.roleName}</option>
+                                </c:if>
+                                <c:if test="${editUser.role eq 'models.Role[ roleId=3 ]' && read.roleId eq '3'}">
+                                    <option value="${read.roleId}" selected>${read.roleName}</option>
+                                </c:if>
                             </c:forEach>
                         </select><br/>
                         <input type="hidden" name="action" value="update">
