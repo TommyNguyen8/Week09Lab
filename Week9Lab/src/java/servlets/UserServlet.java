@@ -83,7 +83,7 @@ public class UserServlet extends HttpServlet {
                     users.insert(newUser, newRole);
                     break;
                 case "update":
-                    users.update(newUser);
+                    users.update(newUser, newRole);
                     break;
                 case "delete":
                     users.delete(userEmail);

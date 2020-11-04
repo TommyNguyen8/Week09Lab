@@ -35,8 +35,9 @@ public class UserService {
         userDB.insert(user);
     }
     
-    public void update(User thisUser) throws Exception {
+    public void update(User thisUser, Role newRole) throws Exception {
         User user = thisUser;
+        user.setRole(newRole);
         UserDB userDB = new UserDB();
         userDB.update(user);
     }
@@ -45,6 +46,4 @@ public class UserService {
         UserDB userDB = new UserDB();
         userDB.delete(email);
     }
-   
-    
 }
